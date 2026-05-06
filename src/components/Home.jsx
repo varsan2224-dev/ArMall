@@ -263,6 +263,7 @@ function Home() {
                     <img
                       src={image}
                       alt={`ArMall slide ${i + 1}`}
+                      loading="lazy"
                       className="h-full w-full rounded-2xl object-cover"
                     />
                   </div>

@@ -2,13 +2,13 @@ import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Layout from './Layout'
 import Home from './components/Home'
-import Products from './components/Products'
 import Promotions from './components/Promotions'
 import Brands from './components/Brands'
 import News from './components/News'
 import Login from './components/Login'
 import SignUp from './components/SignUp'
 import About from './components/About'
+import Products from './components/products/Products'
 
 function App() {
 
