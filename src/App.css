@@ -1,0 +1,7 @@
+@reference './index.css';
+
+@layer base{
+  div{
+    @apply text-cyan-50
+  }
+}
