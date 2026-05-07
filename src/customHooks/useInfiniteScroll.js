@@ -7,7 +7,6 @@ function useInfiniteScroll(callback, loading, hasMore) {
     const loader = loaderRef.current;
 
     if (!loader) return;
-    if (loading) return;
     if (!hasMore) return;
 
     const observer = new IntersectionObserver(
@@ -17,9 +16,7 @@ function useInfiniteScroll(callback, loading, hasMore) {
         }
       },
       {
-        root: null,
-        rootMargin: "200px",
-        threshold: 0,
+        threshold: 1.0,
       }
     );
 

@@ -40,8 +40,7 @@ function Footer() {
                 <li key={index}>
                   <a
                     href=""
-                    onClick={(e) => {
-                      e.preventDefault();
+                    onClick={() => {
                       navigateTo(item);
                     }}
                     className="text-slate-500 text-sm hover:text-cyan-400 transition-colors"

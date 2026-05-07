@@ -9,11 +9,14 @@ import Login from './components/Login'
 import SignUp from './components/SignUp'
 import About from './components/About'
 import Products from './components/products/Products'
+import ProductDetails from './components/products/ProductDetails'
+import CustomCursor from './CustomCursor'
 
 function App() {
 
   return (
    <div className='bg-slate-950'>
+    <CustomCursor />
     <Routes>
       <Route element={<Layout />}>
         <Route path='/' element={<Home />} />
@@ -24,7 +27,7 @@ function App() {
         <Route path='about' element={<About/>} />
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<SignUp />} />
-        <Route path='products/:id' />
+        <Route path='products/:id' element={<ProductDetails />} />
       </Route>
     </Routes>
    </div>

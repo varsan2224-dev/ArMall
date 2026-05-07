@@ -2,9 +2,17 @@ import { useCallback, useState } from "react";
 import useFetch from "../../customHooks/useFetch";
 import useInfiniteScroll from "../../customHooks/useInfiniteScroll";
 import ProductFilter from "./ProductFilter";
+import { useNavigate } from "react-router-dom";
+
+const initialFilters = {
+  category: "",
+  rating: "",
+  minPrice: "",
+  maxPrice: "",
+};
 
 function Products() {
-  const [selected, setSelected] = useState("");
+  const [filters, setFilters] = useState(initialFilters);
 
   const {
     loading,
@@ -15,12 +23,12 @@ function Products() {
     input,
     handleSearch,
     resetProducts,
-  } = useFetch(selected);
+  } = useFetch(filters);
 
   const handleApply = useCallback(
-    (category) => {
+    (nextFilters) => {
       resetProducts();
-      setSelected(category);
+      setFilters(nextFilters);
     },
     [resetProducts]
   );
@@ -35,6 +43,16 @@ function Products() {
     hasMore
   );
 
+  const navigate = useNavigate();
+
+  function handleOpen(id){
+    const finded = products.find(p => p.id === id);
+    if(finded){
+      navigate(`/products/${id}`,{state:{product:finded}})
+    }
+    console.log(finded)
+  }
+
   if (error) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-950">
@@ -48,7 +66,7 @@ function Products() {
   return (
     <div className="relative min-h-screen w-full bg-slate-950 px-4 py-8 text-cyan-50">
       <div className="relative z-20 flex min-h-16 items-center gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 px-4 py-3 max-sm:flex-col max-sm:items-stretch">
-        <ProductFilter value={selected} onApply={handleApply} />
+        <ProductFilter value={filters} onApply={handleApply} />
 
         <input
           type="text"
@@ -83,7 +101,8 @@ function Products() {
               <img
                 src={product.thumbnail}
                 alt={product.title}
-                className="relative z-10 h-full w-full object-contain drop-shadow-[0_18px_30px_rgba(0,0,0,0.45)] transition duration-300 group-hover:scale-110"
+                onClick={() => handleOpen(product.id)}
+                className="cursor-pointer relative z-10 h-full w-full object-contain drop-shadow-[0_18px_30px_rgba(0,0,0,0.45)] transition duration-300 group-hover:scale-110"
               />
             </div>
 
@@ -111,6 +130,10 @@ function Products() {
                     reviews: {product.reviews}
                   </h1>
                 </div>
+
+                <h1 className="text-xl font-bold text-cyan-300">
+                  ${product.price}
+                </h1>
 
                 {product.stock > 0 ? (
                   <div className="flex w-full items-center gap-2">

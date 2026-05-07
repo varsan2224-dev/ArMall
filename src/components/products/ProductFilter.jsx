@@ -28,10 +28,19 @@ const categories = [
   { id: 24, category: "Vehicle" },
 ];
 
-function ProductFilter({ value, onApply }) {
+const emptyFilters = {
+  category: "",
+  rating: "",
+  minPrice: "",
+  maxPrice: "",
+};
+
+function ProductFilter({ value = emptyFilters, onApply }) {
   const [openFilter, setOpenFilter] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
   const [temp, setTemp] = useState(value);
+
+  const hasActiveFilter = Object.values(value).some(Boolean);
 
   function toggleMenu() {
     if (!openFilter) {
@@ -47,8 +56,8 @@ function ProductFilter({ value, onApply }) {
   }
 
   function clearFilter() {
-    setTemp("");
-    onApply("");
+    setTemp(emptyFilters);
+    onApply(emptyFilters);
     setOpenFilter(false);
     setOpenCategory(false);
   }
@@ -59,11 +68,11 @@ function ProductFilter({ value, onApply }) {
         type="button"
         onClick={toggleMenu}
         aria-label="toggle filter menu"
-        className="relative cursor-pointer rounded-lg bg-gradient-to-r from-cyan-600 to-fuchsia-950 px-4 py-2"
+        className="relative cursor-pointer rounded-lg bg-gradient-to-r from-cyan-600 to-fuchsia-950 px-4 py-2 transition duration-300 hover:from-cyan-500 hover:to-fuchsia-900"
       >
         <LuFilter size={20} className="text-cyan-300" />
 
-        {value && (
+        {hasActiveFilter && (
           <span className="absolute -right-1 -top-1 h-2 w-2 rounded-full bg-cyan-400" />
         )}
       </button>
@@ -77,14 +86,14 @@ function ProductFilter({ value, onApply }) {
       <span className="text-cyan-50">nested search</span>
 
       <div
-        className={`absolute top-full z-50 mt-2 w-64 origin-top rounded-lg border border-slate-700 bg-slate-900 transition-all duration-300 ease-in-out
+        className={`absolute top-full z-50 mt-2 w-72 origin-top rounded-lg border border-slate-700 bg-slate-900 shadow-2xl shadow-slate-950/60 transition-all duration-300 ease-in-out
         ${
           openFilter
             ? "scale-y-100 opacity-100"
             : "pointer-events-none scale-y-0 opacity-0"
         }`}
       >
-        <div className="space-y-2 p-3">
+        <div className="space-y-3 p-3">
           <button
             type="button"
             onClick={() => setOpenCategory((prev) => !prev)}
@@ -92,7 +101,11 @@ function ProductFilter({ value, onApply }) {
           >
             <span>
               Category{" "}
-              {temp && <span className="text-xs text-cyan-400">• {temp}</span>}
+              {temp.category && (
+                <span className="text-xs text-cyan-400">
+                  • {temp.category}
+                </span>
+              )}
             </span>
 
             <LuChevronDown
@@ -119,8 +132,13 @@ function ProductFilter({ value, onApply }) {
                     <input
                       type="radio"
                       name="category"
-                      checked={temp === categoryValue}
-                      onChange={() => setTemp(categoryValue)}
+                      checked={temp.category === categoryValue}
+                      onChange={() =>
+                        setTemp((prev) => ({
+                          ...prev,
+                          category: categoryValue,
+                        }))
+                      }
                       className="accent-cyan-500"
                     />
 
@@ -132,13 +150,61 @@ function ProductFilter({ value, onApply }) {
               })}
             </div>
           </div>
+
+          <label className="flex cursor-pointer items-center gap-2 rounded px-1 py-1 text-slate-200 hover:bg-slate-800">
+            <input
+              type="checkbox"
+              checked={temp.rating === "4.5"}
+              onChange={(e) =>
+                setTemp((prev) => ({
+                  ...prev,
+                  rating: e.target.checked ? "4.5" : "",
+                }))
+              }
+              className="accent-cyan-500"
+            />
+
+            <span className="text-sm">4.5+ Rating</span>
+          </label>
+
+          <div className="space-y-2 rounded-lg border border-slate-700 bg-slate-950/60 p-2">
+            <h3 className="text-sm font-medium text-cyan-300">Price range</h3>
+
+            <input
+              type="number"
+              min="0"
+              value={temp.minPrice}
+              onChange={(e) =>
+                setTemp((prev) => ({
+                  ...prev,
+                  minPrice: e.target.value,
+                }))
+              }
+              placeholder="Min price"
+              className="w-full rounded-md border border-slate-700 bg-cyan-50 px-3 py-1.5 text-sm text-slate-950 outline-none placeholder:text-slate-600 focus:border-cyan-400"
+            />
+
+            <input
+              type="number"
+              min="0"
+              value={temp.maxPrice}
+              onChange={(e) =>
+                setTemp((prev) => ({
+                  ...prev,
+                  maxPrice: e.target.value,
+                }))
+              }
+              placeholder="Max price"
+              className="w-full rounded-md border border-slate-700 bg-cyan-50 px-3 py-1.5 text-sm text-slate-950 outline-none placeholder:text-slate-600 focus:border-cyan-400"
+            />
+          </div>
         </div>
 
         <div className="flex gap-2 px-3 pb-3">
           <button
             type="button"
             onClick={clearFilter}
-            className="flex-1 rounded-lg border border-slate-600 py-1.5 text-sm text-slate-400 transition-colors hover:border-slate-500"
+            className="flex-1 rounded-lg border border-slate-600 py-1.5 text-sm text-slate-400 transition-colors hover:border-slate-500 hover:text-slate-300"
           >
             Clear
           </button>

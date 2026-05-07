@@ -9,6 +9,13 @@ const initialState = {
   hasMore: true,
 };
 
+const defaultFilters = {
+  category: "",
+  rating: "",
+  minPrice: "",
+  maxPrice: "",
+};
+
 function reducer(state, action) {
   switch (action.type) {
     case "FETCH_START":
@@ -73,7 +80,7 @@ function getReviewCount(productId) {
   return ((productId * 17) % 100) + 1;
 }
 
-function useFetch(selected = "") {
+function useFetch(filters = defaultFilters) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { products, loading, error, page, hasMore } = state;
 
@@ -84,6 +91,14 @@ function useFetch(selected = "") {
   const debounceRef = useRef(null);
 
   const limit = 12;
+
+  const selected = filters.category || "";
+  const ratingLimit = filters.rating ? Number(filters.rating) : 0;
+  const minPrice = filters.minPrice ? Number(filters.minPrice) : 0;
+  const maxPrice = filters.maxPrice ? Number(filters.maxPrice) : Infinity;
+
+  const hasRatingFilter = Boolean(filters.rating);
+  const hasPriceFilter = Boolean(filters.minPrice || filters.maxPrice);
 
   const resetProducts = useCallback(() => {
     dispatch({ type: "RESET" });
@@ -123,14 +138,17 @@ function useFetch(selected = "") {
     const controller = new AbortController();
 
     const searchValue = q.trim().toLowerCase();
-    const isNestedSearch = selected && searchValue;
+    const isNestedSearch = Boolean(selected && searchValue);
+    const hasClientFilters = isNestedSearch || hasRatingFilter || hasPriceFilter;
 
-    const skip = isNestedSearch ? 0 : (page - 1) * limit;
-    const requestLimit = isNestedSearch ? 100 : limit;
+    const skip = hasClientFilters ? 0 : (page - 1) * limit;
+    const requestLimit = hasClientFilters ? 200 : limit;
 
     const url = selected
       ? `https://dummyjson.com/products/category/${selected}?limit=${requestLimit}&skip=${skip}`
-      : `https://dummyjson.com/products/search?limit=${limit}&skip=${skip}&q=${encodeURIComponent(q)}`;
+      : `https://dummyjson.com/products/search?limit=${requestLimit}&skip=${skip}&q=${encodeURIComponent(
+          q
+        )}`;
 
     async function fetchData() {
       try {
@@ -162,6 +180,21 @@ function useFetch(selected = "") {
           });
         }
 
+        if (hasRatingFilter || hasPriceFilter) {
+          nextProducts = nextProducts.filter((product) => {
+            const matchRating =
+              !hasRatingFilter || product.rating >= ratingLimit;
+
+            const matchMinPrice =
+              !filters.minPrice || product.price >= minPrice;
+
+            const matchMaxPrice =
+              !filters.maxPrice || product.price <= maxPrice;
+
+            return matchRating && matchMinPrice && matchMaxPrice;
+          });
+        }
+
         const productsWithReview = nextProducts.map((product) => ({
           ...product,
           reviews: getReviewCount(product.id),
@@ -171,7 +204,7 @@ function useFetch(selected = "") {
           type: "FETCH_SUCCESS",
           products: productsWithReview,
           page,
-          hasMore: isNestedSearch
+          hasMore: hasClientFilters
             ? false
             : skip + nextProducts.length < data.total,
         });
@@ -189,9 +222,26 @@ function useFetch(selected = "") {
 
     return () => {
       controller.abort();
+    };
+  }, [
+    page,
+    q,
+    selected,
+    filters.rating,
+    filters.minPrice,
+    filters.maxPrice,
+    hasRatingFilter,
+    hasPriceFilter,
+    ratingLimit,
+    minPrice,
+    maxPrice,
+  ]);
+
+  useEffect(() => {
+    return () => {
       clearTimeout(debounceRef.current);
     };
-  }, [page, q, selected]);
+  }, []);
 
   return {
     products,
