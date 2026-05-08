@@ -32,7 +32,7 @@ function reducer(state, action) {
           : [...state.products, ...action.products];
 
       const uniqueProducts = Array.from(
-        new Map(nextProducts.map((product) => [product.id, product])).values()
+        new Map(nextProducts.map((product) => [product.id, product])).values(),
       );
 
       return {
@@ -131,7 +131,7 @@ function useFetch(filters = defaultFilters) {
         setSearchParams(params, { replace: true });
       }, 400);
     },
-    [searchParams, setSearchParams]
+    [searchParams, setSearchParams],
   );
 
   useEffect(() => {
@@ -139,7 +139,8 @@ function useFetch(filters = defaultFilters) {
 
     const searchValue = q.trim().toLowerCase();
     const isNestedSearch = Boolean(selected && searchValue);
-    const hasClientFilters = isNestedSearch || hasRatingFilter || hasPriceFilter;
+    const hasClientFilters =
+      isNestedSearch || hasRatingFilter || hasPriceFilter;
 
     const skip = hasClientFilters ? 0 : (page - 1) * limit;
     const requestLimit = hasClientFilters ? 200 : limit;
@@ -147,7 +148,7 @@ function useFetch(filters = defaultFilters) {
     const url = selected
       ? `https://dummyjson.com/products/category/${selected}?limit=${requestLimit}&skip=${skip}`
       : `https://dummyjson.com/products/search?limit=${requestLimit}&skip=${skip}&q=${encodeURIComponent(
-          q
+          q,
         )}`;
 
     async function fetchData() {

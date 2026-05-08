@@ -17,7 +17,7 @@ function useInfiniteScroll(callback, loading, hasMore) {
       },
       {
         threshold: 1.0,
-      }
+      },
     );
 
     observer.observe(loader);

@@ -7,7 +7,11 @@ function StarRating({ rating }) {
         <LuStar
           key={star}
           size={15}
-          className={star <= Math.round(rating) ? "fill-amber-400 text-amber-400" : "text-slate-600"}
+          className={
+            star <= Math.round(rating)
+              ? "fill-amber-400 text-amber-400"
+              : "text-slate-600"
+          }
         />
       ))}
       <span className="ml-1 text-xs text-slate-400">{rating?.toFixed(1)}</span>
@@ -15,4 +19,4 @@ function StarRating({ rating }) {
   );
 }
 
-export default StarRating
+export default StarRating;

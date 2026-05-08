@@ -5,11 +5,13 @@ function InfoPill({ icon: Icon, label, value }) {
         <Icon size={15} className="text-cyan-400" />
       </div>
       <div>
-        <p className="mb-0.5 text-[10px] uppercase tracking-widest text-slate-500">{label}</p>
+        <p className="mb-0.5 text-[10px] uppercase tracking-widest text-slate-500">
+          {label}
+        </p>
         <p className="text-sm font-medium text-slate-200">{value}</p>
       </div>
     </div>
   );
 }
 
-export default InfoPill
+export default InfoPill;

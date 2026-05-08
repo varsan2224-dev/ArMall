@@ -102,9 +102,7 @@ function ProductFilter({ value = emptyFilters, onApply }) {
             <span>
               Category{" "}
               {temp.category && (
-                <span className="text-xs text-cyan-400">
-                  • {temp.category}
-                </span>
+                <span className="text-xs text-cyan-400">• {temp.category}</span>
               )}
             </span>
 

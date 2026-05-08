@@ -12,6 +12,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import StarRating from "./StarRating";
 import InfoPill from "./InfoPill";
 import ReviewCard from "./ReviewCard";
+import { useCart } from "../../customHooks/useCart";
 
 const initialState = { product: null, loading: false, error: "" };
 
@@ -33,9 +34,12 @@ function init(productFromLocation) {
 }
 
 function ProductDetails() {
+  const { addToCart, cartItems } = useCart();
+
   const location = useLocation();
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [state, dispatch] = useReducer(
     reducer,
     location.state?.product || null,
@@ -225,15 +229,17 @@ function ProductDetails() {
           </p>
 
           <div className="mb-7 flex gap-3">
-            <button className="flex-1 rounded-xl border border-cyan-400/35 bg-cyan-400/10 py-3 text-sm font-bold tracking-wide text-cyan-400 transition hover:bg-cyan-400/20">
-              Add to Cart
+            <button
+              onClick={() => addToCart(product)}
+              className="flex-1 rounded-xl border border-cyan-400/35 bg-cyan-400/10 py-3 text-sm font-bold tracking-wide text-cyan-400 transition hover:bg-cyan-400/20"
+            >
+              {cartItems.find((i) => i.id === product.id)?.quantity ?? "Buy"}
             </button>
             <button className="flex-1 rounded-xl bg-cyan-400 py-3 text-sm font-bold tracking-wide text-slate-950 transition hover:bg-cyan-300">
               Buy Now
             </button>
           </div>
 
-          {/* Tabs */}
           <div className="mb-5 flex border-b border-white/[0.07]">
             {["details", "reviews"].map((tab) => (
               <button

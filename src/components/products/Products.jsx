@@ -3,6 +3,7 @@ import useFetch from "../../customHooks/useFetch";
 import useInfiniteScroll from "../../customHooks/useInfiniteScroll";
 import ProductFilter from "./ProductFilter";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../../customHooks/useCart";
 
 const initialFilters = {
   category: "",
@@ -30,7 +31,7 @@ function Products() {
       resetProducts();
       setFilters(nextFilters);
     },
-    [resetProducts]
+    [resetProducts],
   );
 
   const { loaderRef } = useInfiniteScroll(
@@ -40,18 +41,20 @@ function Products() {
       setPage((prev) => prev + 1);
     }, [loading, hasMore, setPage]),
     loading,
-    hasMore
+    hasMore,
   );
 
   const navigate = useNavigate();
 
-  function handleOpen(id){
-    const finded = products.find(p => p.id === id);
-    if(finded){
-      navigate(`/products/${id}`,{state:{product:finded}})
+  function handleOpen(id) {
+    const finded = products.find((p) => p.id === id);
+    if (finded) {
+      navigate(`/products/${id}`, { state: { product: finded } });
     }
-    console.log(finded)
+    console.log(finded);
   }
+
+  const { addToCart, decreaseQuantity, cartItems } = useCart();
 
   if (error) {
     return (
@@ -137,15 +140,25 @@ function Products() {
 
                 {product.stock > 0 ? (
                   <div className="flex w-full items-center gap-2">
-                    <button className="h-10 w-10 cursor-pointer rounded-xl border border-slate-700 bg-slate-950 text-lg font-semibold text-slate-300 transition duration-300 hover:border-cyan-400/60 hover:text-cyan-300 hover:shadow-[0_0_14px_rgba(34,211,238,0.18)] active:scale-95">
+                    <button
+                      onClick={() => decreaseQuantity(product.id)}
+                      className="h-10 w-10 cursor-pointer rounded-xl border border-slate-700 bg-slate-950 text-lg font-semibold text-slate-300 transition duration-300 hover:border-cyan-400/60 hover:text-cyan-300 hover:shadow-[0_0_14px_rgba(34,211,238,0.18)] active:scale-95"
+                    >
                       -
                     </button>
 
-                    <button className="h-10 flex-1 cursor-pointer rounded-xl border border-cyan-400/50 bg-slate-950 px-4 text-sm font-semibold text-cyan-300 shadow-[0_0_22px_rgba(34,211,238,0.24)] transition duration-300 hover:border-fuchsia-400/60 hover:bg-slate-900 hover:text-cyan-200 hover:shadow-[0_0_30px_rgba(217,70,239,0.30)] active:scale-95">
-                      Buy
+                    <button
+                      onClick={() => addToCart(product)}
+                      className="h-10 flex-1 cursor-pointer rounded-xl border border-cyan-400/50 bg-slate-950 px-4 text-sm font-semibold text-cyan-300 shadow-[0_0_22px_rgba(34,211,238,0.24)] transition duration-300 hover:border-fuchsia-400/60 hover:bg-slate-900 hover:text-cyan-200 hover:shadow-[0_0_30px_rgba(217,70,239,0.30)] active:scale-95"
+                    >
+                      {cartItems.find((i) => i.id === product.id)?.quantity ??
+                        "Buy"}
                     </button>
 
-                    <button className="h-10 w-10 cursor-pointer rounded-xl border border-slate-700 bg-slate-950 text-lg font-semibold text-slate-300 transition duration-300 hover:border-fuchsia-400/60 hover:text-fuchsia-300 hover:shadow-[0_0_14px_rgba(217,70,239,0.18)] active:scale-95">
+                    <button
+                      onClick={() => addToCart(product)}
+                      className="h-10 w-10 cursor-pointer rounded-xl border border-slate-700 bg-slate-950 text-lg font-semibold text-slate-300 transition duration-300 hover:border-fuchsia-400/60 hover:text-fuchsia-300 hover:shadow-[0_0_14px_rgba(217,70,239,0.18)] active:scale-95"
+                    >
                       +
                     </button>
                   </div>

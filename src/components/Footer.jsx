@@ -90,19 +90,19 @@ function Footer() {
                   name: "Instagram",
                   icon: <FaInstagram />,
                   href: "#",
-                  color:"fuchsia"
+                  color: "fuchsia",
                 },
                 {
                   name: "Telegram",
                   icon: <FaTelegramPlane />,
                   href: "#",
-                  color:"#229ED9"
+                  color: "#229ED9",
                 },
                 {
                   name: "TikTok",
                   icon: <FaTiktok />,
                   href: "#",
-                  color:"010101"
+                  color: "010101",
                 },
               ].map((social) => (
                 <a
@@ -110,10 +110,10 @@ function Footer() {
                   href={social.href}
                   onClick={(e) => e.preventDefault()}
                   aria-label={social.name}
-                 className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-700 text-lg text-slate-500 transition-all duration-300 hover:border-cyan-500 hover:bg-slate-900 hover:text-cyan-400 hover:shadow-[0_0_18px_rgba(34,211,238,0.18)] active:scale-95"
-                 style={{color:social.color}}
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-700 text-lg text-slate-500 transition-all duration-300 hover:border-cyan-500 hover:bg-slate-900 hover:text-cyan-400 hover:shadow-[0_0_18px_rgba(34,211,238,0.18)] active:scale-95"
+                  style={{ color: social.color }}
                 >
-                    {social.icon}
+                  {social.icon}
                 </a>
               ))}
             </div>

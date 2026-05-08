@@ -3,19 +3,34 @@ import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import armalllogo from "./images/armalllogo.png";
 import Footer from "./components/Footer";
+import { LuShoppingCart } from "react-icons/lu";
+import { useCart } from "./customHooks/useCart";
+import AuthModal from "./components/auth/AuthModal";
 
 const navItems = [
   { to: "/", label: "Home" },
   { to: "/products", label: "Products" },
   { to: "/brands", label: "Brands" },
   { to: "/promotions", label: "Promotions" },
-  { to: "/news", label: "News" },
   { to: "/about", label: "About us" },
 ];
 
 function Layout() {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { cartItems } = useCart();
+  const [isOpen, setIsOpen] = useState(false);
+  const [initialTab, setInitialTab] = useState("login");
+
+  function openLogin() {
+    setInitialTab("login");
+    setIsOpen(true);
+  }
+
+  function openRegister() {
+    setInitialTab("register");
+    setIsOpen(true);
+  }
 
   const navWrapperRef = useRef(null);
   const navRefs = useRef([]);
@@ -76,17 +91,21 @@ function Layout() {
     <div className="min-h-screen bg-slate-950 text-cyan-50 font-serif">
       <nav className="w-full min-h-[72px] flex justify-between items-center border-b bg-slate-950 border-slate-800 px-4 md:px-6 gap-4">
         <div className="flex justify-center items-center gap-2">
-        <NavLink
-          to="/"
-          className="h-12 w-12 flex justify-center items-center rounded-full bg-gradient-to-b from-amber-400 to-blue-500 shrink-0"
-        >
-          <img src={armalllogo} alt="ArMall" className="h-9 w-9 rounded-full" />
-        </NavLink>
-        <div>
-        <span className="text-red-400">AR</span>
-        <span className="text-blue-400">M</span>
-        <span className="text-orange-400">ALL</span>
-        </div>
+          <NavLink
+            to="/"
+            className="h-12 w-12 flex justify-center items-center rounded-full bg-gradient-to-b from-amber-400 to-blue-500 shrink-0"
+          >
+            <img
+              src={armalllogo}
+              alt="ArMall"
+              className="h-9 w-9 rounded-full"
+            />
+          </NavLink>
+          <div>
+            <span className="text-red-400">AR</span>
+            <span className="text-blue-400">M</span>
+            <span className="text-orange-400">ALL</span>
+          </div>
         </div>
         <div
           ref={navWrapperRef}
@@ -121,22 +140,43 @@ function Layout() {
               {item.label}
             </NavLink>
           ))}
+          <div></div>
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
+          <NavLink
+            to="/cart"
+            className={({ isActive }) =>
+              `group relative flex h-11 w-11 items-center justify-center rounded-2xl border transition-all duration-300 active:scale-95
+      ${
+        isActive
+          ? "border-cyan-400 bg-cyan-400 text-slate-950 shadow-[0_0_30px_rgba(34,211,238,0.35)]"
+          : "border-cyan-400/25 bg-slate-900/70 text-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.08)] hover:-translate-y-0.5 hover:border-cyan-400/60 hover:bg-cyan-400/10 hover:text-cyan-200 hover:shadow-[0_0_30px_rgba(34,211,238,0.22)]"
+      }`
+            }
+          >
+            <LuShoppingCart
+              size={21}
+              className="transition-transform duration-300 group-hover:scale-110"
+            />
+
+            <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border border-slate-950 bg-cyan-400 px-1 text-[10px] font-black text-slate-950 shadow-[0_0_14px_rgba(34,211,238,0.55)]">
+              {cartItems.length}
+            </span>
+          </NavLink>
           <div className="flex gap-2">
-            <NavLink
-              to="/login"
+            <button
+              onClick={openLogin}
               className="rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-2 text-sm font-medium text-slate-300 hover:border-cyan-400/50 hover:bg-slate-800 hover:text-cyan-300 transition-all duration-100"
             >
-              Log in
-            </NavLink>
-            <NavLink
-              to="/signup"
+              Login
+            </button>
+            <button
+              onClick={openRegister}
               className="rounded-xl border border-cyan-300/30 bg-gradient-to-r from-cyan-400 to-violet-500 px-4 py-2 text-sm font-bold text-slate-950 shadow-lg shadow-cyan-950/50 transition-all duration-200 hover:from-cyan-300 hover:to-violet-400"
             >
               Sign up
-            </NavLink>
+            </button>
           </div>
 
           <button
@@ -193,7 +233,13 @@ function Layout() {
         )}
       </AnimatePresence>
       <Outlet />
-
+      {isOpen && (
+        <AuthModal
+          key={initialTab}
+          initialTab={initialTab}
+          onClose={() => setIsOpen(false)}
+        />
+      )}
       <Footer />
     </div>
   );
