@@ -144,27 +144,7 @@ function Layout() {
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
-          <NavLink
-            to="/cart"
-            className={({ isActive }) =>
-              `group relative flex h-11 w-11 items-center justify-center rounded-2xl border transition-all duration-300 active:scale-95
-      ${
-        isActive
-          ? "border-cyan-400 bg-cyan-400 text-slate-950 shadow-[0_0_30px_rgba(34,211,238,0.35)]"
-          : "border-cyan-400/25 bg-slate-900/70 text-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.08)] hover:-translate-y-0.5 hover:border-cyan-400/60 hover:bg-cyan-400/10 hover:text-cyan-200 hover:shadow-[0_0_30px_rgba(34,211,238,0.22)]"
-      }`
-            }
-          >
-            <LuShoppingCart
-              size={21}
-              className="transition-transform duration-300 group-hover:scale-110"
-            />
-
-            <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border border-slate-950 bg-cyan-400 px-1 text-[10px] font-black text-slate-950 shadow-[0_0_14px_rgba(34,211,238,0.55)]">
-              {cartItems.length}
-            </span>
-          </NavLink>
-          <div className="flex flex-col md:flex-row gap-1.5 md:gap-2">
+          <div className="flex gap-1">
             <button
               onClick={openLogin}
               className="rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-2 text-sm font-medium text-slate-300 hover:border-cyan-400/50 hover:bg-slate-800 hover:text-cyan-300 transition-all duration-100"
@@ -199,6 +179,23 @@ function Layout() {
           </button>
         </div>
       </nav>
+
+      <NavLink
+        to="/cart"
+        className={({ isActive }) =>
+          `fixed top-24 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-2xl border shadow-2xl transition-all duration-300 active:scale-95
+    ${
+      isActive
+        ? "border-cyan-400 bg-cyan-400 text-slate-950 shadow-cyan-400/30"
+        : "border-cyan-400/30 bg-slate-900 text-cyan-300 shadow-slate-950/60 hover:border-cyan-400/60 hover:bg-cyan-400/10"
+    }`
+        }
+      >
+        <LuShoppingCart size={24} />
+        <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border border-slate-950 bg-cyan-400 px-1 text-[10px] font-black text-slate-950 shadow-[0_0_14px_rgba(34,211,238,0.55)]">
+          {cartItems.length}
+        </span>
+      </NavLink>
 
       <AnimatePresence>
         {menuOpen && (

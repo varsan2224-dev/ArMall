@@ -52,8 +52,8 @@ export default function SignUpForm({ onSwitch }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <div className="grid grid-cols-2 gap-3">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+      <div className="grid grid-cols-2 gap-1">
         <Field
           label="First name"
           name="name"

@@ -69,7 +69,7 @@ export default function AuthModal({ initialTab = "login", onClose }) {
           <div className="pointer-events-none absolute -bottom-24 -right-20 h-60 w-60 rounded-full bg-violet-500/10 blur-3xl" />
 
 
-          <div className="relative border-b border-slate-800/80 bg-slate-900/60 px-7 py-6">
+          <div className="relative border-b border-slate-800/80 bg-slate-900/60 px-7 py-4">
   
             <button
               type="button"
@@ -87,13 +87,13 @@ export default function AuthModal({ initialTab = "login", onClose }) {
             </button>
 
    
-            <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.35em] text-cyan-400">
+            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-cyan-400">
               Welcome to ArMall
             </p>
 
             <h2
               key={tab}
-              className="tab-content text-2xl font-black text-slate-50"
+              className="tab-content text-xl font-black text-slate-50"
             >
               {isLogin ? "Sign in" : "Create account"}
             </h2>
