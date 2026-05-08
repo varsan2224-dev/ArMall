@@ -164,7 +164,7 @@ function Layout() {
               {cartItems.length}
             </span>
           </NavLink>
-          <div className="flex gap-2">
+          <div className="flex flex-col md:flex-row gap-1.5 md:gap-2">
             <button
               onClick={openLogin}
               className="rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-2 text-sm font-medium text-slate-300 hover:border-cyan-400/50 hover:bg-slate-800 hover:text-cyan-300 transition-all duration-100"
