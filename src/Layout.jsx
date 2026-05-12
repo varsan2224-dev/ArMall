@@ -1,7 +1,7 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useLayoutEffect, useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import armalllogo from "./images/armalllogo.png";
+import armalllogo from "./images/armalllogo.webp";
 import Footer from "./components/Footer";
 import { LuShoppingCart } from "react-icons/lu";
 import { useCart } from "./customHooks/useCart";
