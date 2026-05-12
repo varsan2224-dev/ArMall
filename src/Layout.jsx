@@ -131,6 +131,7 @@ function Layout() {
               ref={(el) => {
                 navRefs.current[i] = el;
               }}
+              onClick={() => window.scrollTo({ top: 0 })}
               end={item.to === "/"}
               className={({ isActive }) =>
                 `relative z-10 px-4 py-2 rounded-xl font-medium text-center text-sm lg:text-base transition-colors duration-200
