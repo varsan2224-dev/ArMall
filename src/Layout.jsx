@@ -204,7 +204,7 @@ function Layout() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="md:hidden overflow-hidden bg-slate-950 border-b border-slate-800"
+            className="fixed left-0 right-0 top-[72px] z-50 md:hidden overflow-hidden bg-slate-950 border-b border-slate-800"
           >
             <div className="relative flex z-50 flex-col gap-1 p-3">
               {navItems.map((item) => (
