@@ -124,7 +124,7 @@ function Cart() {
                         onClick={() => decreaseQuantity(item.id)}
                         className="flex h-7 w-7 items-center justify-center rounded-lg border border-cyan-400/25 bg-cyan-400/10 text-sm font-bold text-cyan-400 transition hover:bg-cyan-400/20 active:scale-90"
                       >
-                        −
+                        -
                       </button>
                       <span className="min-w-[22px] text-center text-sm font-bold text-slate-100">
                         {item.quantity}

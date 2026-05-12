@@ -76,7 +76,7 @@ function Products() {
           value={input}
           onChange={handleSearch}
           placeholder="Search with ArMall"
-          className="absolute left-1/2 h-9 w-72 -translate-x-1/2 rounded-lg border border-cyan-400/30 bg-cyan-50 px-3 text-slate-950 outline-none placeholder:text-slate-600 focus:border-cyan-400 max-sm:static max-sm:w-full max-sm:translate-x-0"
+          className="absolute left-1/2 h-9 w-72 -translate-x-1/2 rounded-lg border border-cyan-400/[0.15] bg-slate-950/60 px-3 text-slate-950 outline-none placeholder:text-slate-600 focus:border-cyan-400 max-sm:static max-sm:w-full max-sm:translate-x-0"
         />
       </div>
 
@@ -86,7 +86,7 @@ function Products() {
 
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(2,6,23,0.20),rgba(2,6,23,0.90))]" />
 
-      <div className="relative z-10 mx-auto my-8 grid w-full max-w-7xl grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="relative z-10 mx-auto my-8 grid w-full max-w-7xl grid-cols-2 gap-7 sm:grid-cols-3 lg:grid-cols-4">
         {products.map((product) => (
           <div
             key={product.id}

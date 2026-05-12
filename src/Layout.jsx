@@ -88,8 +88,8 @@ function Layout() {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-cyan-50 font-serif">
-      <nav className="w-full min-h-[72px] flex justify-between items-center border-b bg-slate-950 border-slate-800 px-4 md:px-6 gap-4">
+    <div className="min-h-screen bg-slate-950 text-cyan-50 font-serif pt-[72px]">
+     <nav className="fixed top-0 left-0 right-0 z-50 w-full min-h-[72px] flex justify-between items-center border-b bg-slate-950 border-slate-800 px-4 md:px-6 gap-4">
         <div className="flex justify-center items-center gap-2">
           <NavLink
             to="/"
@@ -206,7 +206,7 @@ function Layout() {
             transition={{ duration: 0.25, ease: "easeInOut" }}
             className="md:hidden overflow-hidden bg-slate-950 border-b border-slate-800"
           >
-            <div className="flex flex-col gap-1 p-3">
+            <div className="relative flex z-50 flex-col gap-1 p-3">
               {navItems.map((item) => (
                 <NavLink
                   key={item.to}
@@ -227,7 +227,7 @@ function Layout() {
               ))}
             </div>
           </motion.div>
-        )}
+        )}``
       </AnimatePresence>
       <Outlet />
       {isOpen && (
